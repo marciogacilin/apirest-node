@@ -9,10 +9,11 @@ exports.login = async (req, res) => {
         return res.status(400).send({message: 'Informe o e-mail e senha do usuário!'})
     }
     try {
-        let usuario = usuarioRepository.findByEmail(email)
+        let usuario = await usuarioRepository.findByEmail(email)
         if (!usuario){
             return res.status(400).send({message: 'Usuário não encontrado!'})
         }
+        
         if (usuario.password !== crypt.crypt(password)){
             return res.status(400).send({message: 'Acesso negado. Verifique e-mail e senha.'})
         }
@@ -20,7 +21,7 @@ exports.login = async (req, res) => {
             sub: usuario.id,
             name: usuario.nome
         }
-        res.send(authenticate.default.generateToken(payload))
+        res.send({token: authenticate.generateToken(payload)})
     } catch (error) {
         res.status(400).send({message: error})
     }
@@ -41,6 +42,8 @@ exports.findByEmail = async (req, res) => {
 
 exports.createUsuario = async (req, res) => {
     try {
+        req.body.password = crypt.crypt(req.body.password)
+        
         await usuarioRepository.createUsuario(req.body)
 
         return res.status(201).send({message: 'Usuário criado com sucesso!'})

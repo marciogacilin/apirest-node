@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 require('dotenv').config()
 const app = express()
+const authorization = require('./authorization')
 
 //Configração do banco de dados
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING,{
@@ -43,6 +44,7 @@ const usuarioRoutes = require('./routes/usuario-routes')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(authorization.verifyToken)
 
 app.use('/', indexRoutes)
 app.use('/contato', contatoRoutes)

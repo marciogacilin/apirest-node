@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const config = require('../config')
+const config = require('./config')
 
 const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization && req.headers.authorization.split(" ")[0] === 'Bearer'
@@ -31,7 +31,7 @@ const protectRoute = (req, res, next) => {
     })
 }
 
-export default {
+module.exports = {
     verifyToken,
     protectRoute
 }
