@@ -1,27 +1,28 @@
+const mongoose = require('mongoose')
+const Contatos = mongoose.model('Contatos')
+
 exports.listaContatos = async () => {
-    let data = [
-        {
-            id: 1,
-            nome: "João",
-            celular: "71987651234"
-        },
-        {
-            id: 2,
-            nome: "Maria",
-            celular: "71978906745"
-        },
-        {
-            id: 3,
-            nome: "Pedro",
-            celular: "71998762345"
-        }
-    ]
+    let data = Contatos.find({})
 
     return data
 }
 
 exports.createContato = async data => {
-    let datas = await this.listaContatos()
-    datas.push(data)
-    return datas
+    let contato = new Contatos(data)
+    await contato.save()
+    return contato
+}
+
+exports.updateContato = async (id, data) => {
+    await Contatos.findByIdAndUpdate(id, {
+        $set: {
+            nome: data.nome,
+            email: data.email,
+            celular: data.celular
+        }
+    })
+}
+
+exports.deleteContato = async (id) => {
+    await Contatos.findOneAndDelete(id)
 }

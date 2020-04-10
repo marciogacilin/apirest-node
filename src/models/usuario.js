@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const schema = new Schema({
-    nome: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true },
-    celular: { type: String, required: true, trim: true }
+    nome: {type: String, required: true, trim: true},
+    email: {type: String, required: true, trim: true},
+    password: {type: String, required: true, trim: true}
 },
 {
     toJSON: {
@@ -17,4 +17,4 @@ const schema = new Schema({
     versionKey: false
 })
 
-module.exports = mongoose.model('Contatos', schema, 'Contatos')
+module.exports = mongoose.model('Usuarios', schema, 'Usuarios')

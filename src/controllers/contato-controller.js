@@ -11,9 +11,27 @@ exports.listaContatos = async (req, res) => {
 
 exports.createContato = async (req, res) => {
     try {
-        let datas = await contatoRepository.createContato(req.body)
-        res.status(201).send(datas)
+        let contatoCreated = await contatoRepository.createContato(req.body)
+        res.status(201).send(contatoCreated)
     } catch (error) {
-        res.status(400).send({message: 'Erro ao tentar incluir um contato'})
+        res.status(400).send({message: error})
+    }
+}
+
+exports.updateContato = async (req, res) => {
+    try {
+        await contatoRepository.updateContato(req.body.id, req.body)
+        res.send({message: 'Contato alterado com sucesso!'})
+    } catch (error) {
+        res.status(400).send({message: 'Erro ao tentar alterar o contato'})
+    }
+}
+
+exports.deleteContato = async (req, res) => {
+    try {
+        await contatoRepository.deleteContato(req.params.id)
+        res.send({message: 'Contato removido com sucesso'})
+    } catch (error) {
+        res.status(400).send({message: error})
     }
 }
